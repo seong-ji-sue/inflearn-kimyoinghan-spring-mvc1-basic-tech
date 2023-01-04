@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.annotation.PostConstruct;
 import java.util.List;
 
 @Controller
@@ -21,5 +22,10 @@ public class BasicItemController {
         List<Item> items = itemRepository.findAll();
         model.addAttribute("items", items);
         return "html/items";
+    }
+
+    @PostConstruct
+    public void init() {
+        itemRepository.save(new Item("testA",10000,20));
     }
 }
