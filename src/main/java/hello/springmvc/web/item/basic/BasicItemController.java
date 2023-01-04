@@ -5,9 +5,7 @@ import hello.springmvc.domain.item.ItemRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.PostConstruct;
 import java.util.List;
@@ -32,6 +30,45 @@ public class BasicItemController {
         model.addAttribute("item",item);
         return "html/item";
     }
+
+    //상품 등록 폼
+    @GetMapping("/add")
+    public String addForm() {
+        return "html/addForm";
+    }
+
+    //상품 등록 Post 처리
+//    @PostMapping("/add")
+    public String addItemV1(@RequestParam String itemName,
+                            @RequestParam int price,
+                            @RequestParam Integer quantity,
+                            Model model
+                            ) {
+        Item item = new Item();
+        item.setItemName(itemName);
+        item.setPrice(price);
+        item.setQuantity(quantity);
+        itemRepository.save(item);
+        model.addAttribute("item",item);
+        return "html/item";
+    }
+
+    @PostMapping("/add")
+    public String addItemV2(@ModelAttribute Item item,
+                            Model model
+    ) {
+        itemRepository.save(item);
+//        model.addAttribute("item",item); //생략가능
+        return "html/item";
+    }
+
+
+
+
+
+
+
+
 
     @PostConstruct
     public void init() {
